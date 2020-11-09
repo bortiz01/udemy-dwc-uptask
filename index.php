@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <!-- includes php -->
-  <?php include 'includes\functions\functions.php'; ?>
+  <?php include 'includes\functions\functions.php'; ?>  
   <?php include 'includes\templates\head.php'; ?>
 
   <!-- el body esta incluido en el head.php para indicar dinamicamente el css del body -->
