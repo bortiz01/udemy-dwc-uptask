@@ -2,7 +2,7 @@
     // indicamos que omita los mensajes de error por default de conexion
     error_reporting(0);
 
-    // credenciales de la base de datos
+    // constantes de credenciales de la base de datos
     define('DB_HOST', 'localhost');
     define('DB_USER', 'uptask');
     define('DB_PASSWORD', 'uptask123*');    
