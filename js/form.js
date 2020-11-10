@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (this.status === 200) {
           // IMPORTANTE: JS trabaja con objetos, por eso debemos transformar
           // el JSON en un objeto con JSON.parse
-          // console.log(xhr.responseText); //NO!! - muestra el resultado como json
+          // console.log(xhr.responseText); //NO!! - muestra el resultado como json (texto)
           console.log(JSON.parse(xhr.responseText)); //SI!! - muestra el resultado como objeto
         }
       };

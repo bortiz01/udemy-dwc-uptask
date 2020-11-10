@@ -10,11 +10,26 @@
   if ($accion === 'crear') {
     // crear los usuarios
 
+    // hashear password    
+    // 1. definimos el costo del hasheo. Default 10. 12 es mas seguro, pero consume mas recurso
+    $options = [      
+      'cost' => 12
+    ];
+
+    // 2. hasheamos la el password
+    $hash_password = password_hash($password, PASSWORD_BCRYPT, $options);    
+
+    $output = [
+      'pass' => $hash_password
+    ];
+
   }
 
   if ($accion === 'login') {
     // datos de acceso
     
   }
+
+  echo json_encode($output);
 
 ?>
