@@ -3,7 +3,9 @@
 <?php include 'includes\templates\header.php'; ?>
 
 <?php
+// abrimos la sesion
   session_start();
+  // verificamos si la sesion debe de cerrarse
   if (isset($_GET['cerrar_sesion'])) {
     $_SESSION = [];
   };

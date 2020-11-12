@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // funcion que verifica cada evento listener o eventos del proyecto
   function eventListeners() {
+    // 'submit' boton de formularios
+    // 'click' para otros elementos
     document.querySelector("#formulario").addEventListener("submit", validateUser);
   }
 
