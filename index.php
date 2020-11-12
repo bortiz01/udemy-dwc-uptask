@@ -1,4 +1,5 @@
 <!-- includes php -->
+<?php include 'includes\functions\sessions.php'; ?>  
 <?php include 'includes\functions\functions.php'; ?>  
 <?php include 'includes\templates\header.php'; ?>
 

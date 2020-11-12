@@ -15,7 +15,6 @@
     $options = [      
       'cost' => 12
     ];
-
     // 2. hasheamos la el password
     $hash_password = password_hash($password, PASSWORD_BCRYPT, $options);    
 
@@ -31,13 +30,17 @@
       // 3. ejecutamos la consulta
       $stmt->execute();
       // 4. procesamos el resultado de la consulta
+      // si se inserto un registro
       if ($stmt->affected_rows > 0) {
+        // creamos la respuesta a enviar
         $output = [
           'response' => 'success',
           'id' => $stmt->insert_id,
           'action' => $accion
         ];
+      // si no se modifico ningun registro
       } else {
+        // creamos la respuesta a enviar
         $output = [
           'response' => 'error',
           'error' => $stmt->error
@@ -57,9 +60,8 @@
   };
 
 /* ------------------------------- login user ------------------------------- */
-  if ($accion === 'login') {
-    // datos de acceso    
-
+// datos de acceso
+if ($accion === 'login') {  
     // importamos la conexion a la BD
     require '..\functions\db_connect.php';
 
@@ -80,6 +82,12 @@
       if ($db_id_user) {
         // login correcto
         if (password_verify($password, $db_password)) {
+          // iniciamos la sesion del usuario
+          session_start();
+          $_SESSION['id_user'] = $db_id_user;
+          $_SESSION['username'] = $db_username;          
+          $_SESSION['login'] = true;
+          // creamos la respuesta a enviar
           $output = [
             'response' => 'success',
             'id_user' => $db_id_user,
@@ -92,7 +100,9 @@
             'error' => 'Password incorrecto'
           ];
         };
+      // usuario incorrecto
       }else {
+        // creamos la respuesta a enviar
         $output = [
           'response' => 'error',
           'error' => 'Usuario no existe'
