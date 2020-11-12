@@ -72,24 +72,32 @@
       // 3. ejecutamos la consulta
       $stmt->execute();
       // 4. procesamos el resultado de la consulta
-      // NOTA: deben de ir en el orden definido en el SELECT o TABLA
-      $stmt->bind_result($id_user_r, $username_r, $password_r);
+      // NOTA: deben de ir en el orden y cantidad definido en el SELECT o TABLA
+      $stmt->bind_result($db_id_user, $db_username, $db_password);
       // NOTA: el FETCH es necesario cuando se utiliza el bind_result
       $stmt->fetch();
-      if ($id_user_r) {
-        $output = [
-          'response' => 'success',
-          'id_user' => $id_user_r,
-          'username' => $username_r,
-          'password' => $password_r,
-          'action' => $accion
-        ];
+      // verificamos si hay un resultado
+      if ($db_id_user) {
+        // login correcto
+        if (password_verify($password, $db_password)) {
+          $output = [
+            'response' => 'success',
+            'id_user' => $db_id_user,
+            'username' => $db_username,
+            'action' => $accion
+          ]; 
+        }else {
+          $output = [
+            'response' => 'error',
+            'error' => 'Password incorrecto'
+          ];
+        };
       }else {
         $output = [
           'response' => 'error',
           'error' => 'Usuario no existe'
         ];
-      }
+      };
       // 5. cerramos el statement
       $stmt->close();
       // 6. cerramos la conexion
