@@ -2,13 +2,9 @@
 <?php include 'includes\functions\sessions.php'; ?>  
 <?php include 'includes\functions\functions.php'; ?>  
 <?php include 'includes\templates\header.php'; ?>
+<?php include 'includes\templates\bar.php'; ?>
 
   <!-- el body esta incluido en el header.php para indicar dinamicamente el css del body -->
-  <div class="barra">
-    <h1>UpTask - Administración de Proyectos</h1>
-    <a href="#">Cerrar Sesión</a>
-  </div>
-
   <div class="contenedor">
     <aside class="contenedor-proyectos">
       <div class="panel crear-proyecto">

@@ -2,6 +2,13 @@
 <?php include 'includes\functions\functions.php'; ?>
 <?php include 'includes\templates\header.php'; ?>
 
+<?php
+  session_start();
+  if (isset($_GET['cerrar_sesion'])) {
+    $_SESSION = [];
+  };
+?>
+
   <!-- el body esta incluido en el header.php para indicar dinamicamente el css del body -->
   <div class="contenedor-formulario">
     <h1>UpTask</h1>

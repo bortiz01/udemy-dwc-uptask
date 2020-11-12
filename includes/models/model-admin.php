@@ -82,7 +82,7 @@ if ($accion === 'login') {
       if ($db_id_user) {
         // login correcto
         if (password_verify($password, $db_password)) {
-          // iniciamos la sesion del usuario
+          // abrimos la sesion
           session_start();
           $_SESSION['id_user'] = $db_id_user;
           $_SESSION['username'] = $db_username;          

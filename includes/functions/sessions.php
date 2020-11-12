@@ -10,7 +10,7 @@
     return isset($_SESSION['username']);
   };
 
-  // enter to the session
+  // abrimos la sesion
   session_start();
   user_authenticated();
 ?>
