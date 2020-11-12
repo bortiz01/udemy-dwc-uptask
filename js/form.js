@@ -63,6 +63,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: "El usuario se creo correctamente",
               });
             } else if (response.action === "login") {
+              Swal.fire({
+                icon: "success",
+                title: "Login correcto",
+                text: "Presiona OK para abrir el dashboard",
+              }).then((result) => {
+                if (result.value) {
+                  window.location.href = "index.php";
+                }
+              });
             }
             // si ocurrio algun error en la insercion
           } else {
