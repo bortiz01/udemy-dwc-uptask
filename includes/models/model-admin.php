@@ -1,12 +1,12 @@
-<?php    
+<?php      
+/* ------------------------------- get values ------------------------------- */
   // debemos enviar la informacion en 
   // formato JSON - formato de intercambio de datos
-  // die(json_encode($_POST));
-
   $accion = $_POST['accion'];
   $usuario = $_POST['usuario'];
   $password = $_POST['password'];
 
+/* ------------------------------- create user ------------------------------ */
   if ($accion === 'crear') {
     // crear los usuarios
 
@@ -23,32 +23,89 @@
     require '..\functions\db_connect.php';
 
     try {
-      // realizar la consulta a la BD
+      // definimos la consulta por prepare statement
+      // 1. indicamos la consulta con parametros
       $stmt = $conn->prepare('INSERT INTO user (username, password) VALUES  (?, ?)');
+      // 2. relacionamos los parametros
       $stmt->bind_param('ss', $usuario, $hash_password);
+      // 3. ejecutamos la consulta
       $stmt->execute();
-
-      $output = [
-        'response' => 'success',
-        'id' => $stmt->insert_id,
-        'action' => $accion
-        // 'error' => $stmt->error
-      ];
-
+      // 4. procesamos el resultado de la consulta
+      if ($stmt->affected_rows > 0) {
+        $output = [
+          'response' => 'success',
+          'id' => $stmt->insert_id,
+          'action' => $accion
+        ];
+      } else {
+        $output = [
+          'response' => 'error',
+          'error' => $stmt->error
+        ];
+      };   
+      // 5. cerramos el statement
       $stmt->close();
+      // 6. cerramos la conexion
       $conn->close();
     }catch(Exception $e) {
       // en caso de error, tomar la exception
       $output = [
-        'response' => $e->getMessage()
+        'response' => 'error',
+        'error' => $e->getMessage()
       ];
     };
   };
 
+/* ------------------------------- login user ------------------------------- */
   if ($accion === 'login') {
     // datos de acceso    
-  }
 
+    // importamos la conexion a la BD
+    require '..\functions\db_connect.php';
+
+    try {
+      // definimos la consulta por prepare statement
+      // 1. indicamos la consulta con parametros
+      $stmt = $conn->prepare('SELECT * FROM user WHERE username = ?');
+      // 2. relacionamos los parametros
+      $stmt->bind_param('s', $usuario);
+      // 3. ejecutamos la consulta
+      $stmt->execute();
+      // 4. procesamos el resultado de la consulta
+      // NOTA: deben de ir en el orden definido en el SELECT o TABLA
+      $stmt->bind_result($id_user_r, $username_r, $password_r);
+      // NOTA: el FETCH es necesario cuando se utiliza el bind_result
+      $stmt->fetch();
+      if ($id_user_r) {
+        $output = [
+          'response' => 'success',
+          'id_user' => $id_user_r,
+          'username' => $username_r,
+          'password' => $password_r,
+          'action' => $accion
+        ];
+      }else {
+        $output = [
+          'response' => 'error',
+          'error' => 'Usuario no existe'
+        ];
+      }
+      // 5. cerramos el statement
+      $stmt->close();
+      // 6. cerramos la conexion
+      $conn->close();
+    }catch(Exception $e) {
+      // en caso de error, tomar la exception
+      $output = [
+        'response' => 'error',
+        'error' => $e->getMessage()
+      ];
+    };
+  };
+
+/* --------------------------- return the response -------------------------- */
+  // convertimos el arreglo en un JSON para el 
+  // intercambio de datos entre PHP y AJAX
   echo json_encode($output);
 
 ?>

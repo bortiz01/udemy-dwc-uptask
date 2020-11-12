@@ -50,7 +50,28 @@ document.addEventListener("DOMContentLoaded", function () {
           // IMPORTANTE: JS trabaja con objetos, por eso debemos transformar
           // el JSON en un objeto con JSON.parse
           // console.log(xhr.responseText); //NO!! - muestra el resultado como json (texto)
-          console.log(JSON.parse(xhr.responseText)); //SI!! - muestra el resultado como objeto
+          // console.log(JSON.parse(xhr.responseText)); //SI!! - muestra el resultado como objeto
+          let response = JSON.parse(xhr.responseText);
+          console.log(response);
+          // si el usuario es registrado con exito en la BD
+          if (response.response === "success") {
+            // si la accion es crear
+            if (response.action === "crear") {
+              Swal.fire({
+                icon: "success",
+                title: "Usuario creado",
+                text: "El usuario se creo correctamente",
+              });
+            } else if (response.action === "login") {
+            }
+            // si ocurrio algun error en la insercion
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Hubo un error!",
+            });
+          }
         }
       };
 
