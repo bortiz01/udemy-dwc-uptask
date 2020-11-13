@@ -1,6 +1,8 @@
 // todo el codigo js se ejecutara despues de que termine de cargarse todos los elementos del DOM(HTML)
 document.addEventListener("DOMContentLoaded", function () {
   eventListener();
+
+  // constantes/variables globales
   const listProjects = document.querySelector("ul#proyectos");
 
   function eventListener() {
@@ -12,16 +14,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // crea un <input> para el nombre del nuevo proyecto
     // creamos el elemento 'li'
-    let newProject = document.createElement("li");
+    let newInput = document.createElement("li");
 
     // adicionamos al elemto 'li' un '<input>'
-    newProject.innerHTML = "<input type='text' id='new-project'>";
+    newInput.innerHTML = "<input type='text' id='new-project'>";
 
     // adicionamos el elemento 'li' creado anteriormente debajo de elemento 'ul#proyectos'
-    listProjects.appendChild(newProject);
+    listProjects.appendChild(newInput);
 
     // seleccionar el ID del nuevo elemento
     const inputNewProject = document.querySelector("#new-project");
+    inputNewProject.focus();
 
     // al presionar ENTER creamos el proyecto
     inputNewProject.addEventListener("keypress", function (e) {
@@ -32,12 +35,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // salvamos el nombre del proyecto en la DB
         saveProjectDB(inputNewProject.value);
         // removemos el elemento creado
-        listProjects.removeChild(newProject);
+        listProjects.removeChild(newInput);
       }
     });
   }
 
   function saveProjectDB(p_projectName) {
-    console.log(p_projectName);
+    // inyectar el HTML
+    let newProject = document.createElement("li");
+    newProject.innerHTML = `<a href='#'>${p_projectName}</a>`;
+    listProjects.appendChild(newProject);
   }
 });
