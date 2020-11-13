@@ -2,14 +2,14 @@
 /* ------------------------------- get values ------------------------------- */
   // debemos enviar la informacion en 
   // formato JSON - formato de intercambio de datos
-  $accion = $_POST['accion'];
+  $action = $_POST['accion'];
   $usuario = $_POST['usuario'];
   $password = $_POST['password'];
 
-/* ------------------------------- create user ------------------------------ */
-  if ($accion === 'crear') {
-    // crear los usuarios
-
+  /* ------------------------------- create user ------------------------------ */
+  // crear los usuarios
+  if ($action === 'crear') {
+    
     // hashear password    
     // 1. definimos el costo del hasheo. Default 10. 12 es mas seguro, pero consume mas recurso
     $options = [      
@@ -25,10 +25,13 @@
       // definimos la consulta por prepare statement
       // 1. indicamos la consulta con parametros
       $stmt = $conn->prepare('INSERT INTO users (username, password) VALUES  (?, ?)');
+      
       // 2. relacionamos los parametros
       $stmt->bind_param('ss', $usuario, $hash_password);
+      
       // 3. ejecutamos la consulta
       $stmt->execute();
+      
       // 4. procesamos el resultado de la consulta
       // si se inserto un registro
       if ($stmt->affected_rows > 0) {
@@ -36,7 +39,7 @@
         $output = [
           'response' => 'success',
           'id' => $stmt->insert_id,
-          'action' => $accion
+          'action' => $action
         ];
       // si no se modifico ningun registro
       } else {
@@ -46,8 +49,10 @@
           'error' => $stmt->error
         ];
       };   
+      
       // 5. cerramos el statement
       $stmt->close();
+      
       // 6. cerramos la conexion
       $conn->close();
     }catch(Exception $e) {
@@ -61,7 +66,7 @@
 
 /* ------------------------------- login user ------------------------------- */
 // datos de acceso
-if ($accion === 'login') {  
+if ($action === 'login') {  
     // importamos la conexion a la BD
     require '..\functions\db_connect.php';
 
@@ -69,15 +74,19 @@ if ($accion === 'login') {
       // definimos la consulta por prepare statement
       // 1. indicamos la consulta con parametros
       $stmt = $conn->prepare('SELECT * FROM users WHERE username = ?');
+      
       // 2. relacionamos los parametros
       $stmt->bind_param('s', $usuario);
+      
       // 3. ejecutamos la consulta
       $stmt->execute();
+      
       // 4. procesamos el resultado de la consulta
       // NOTA: deben de ir en el orden y cantidad definido en el SELECT o TABLA
       $stmt->bind_result($db_id_user, $db_username, $db_password);
       // NOTA: el FETCH es necesario cuando se utiliza el bind_result
       $stmt->fetch();
+      
       // verificamos si hay un resultado
       if ($db_id_user) {
         // login correcto
@@ -92,7 +101,7 @@ if ($accion === 'login') {
             'response' => 'success',
             'id_user' => $db_id_user,
             'username' => $db_username,
-            'action' => $accion
+            'action' => $action
           ]; 
         }else {
           $output = [
@@ -108,8 +117,10 @@ if ($accion === 'login') {
           'error' => 'Usuario no existe'
         ];
       };
+      
       // 5. cerramos el statement
       $stmt->close();
+      
       // 6. cerramos la conexion
       $conn->close();
     }catch(Exception $e) {

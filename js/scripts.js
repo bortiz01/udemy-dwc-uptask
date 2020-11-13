@@ -58,7 +58,41 @@ document.addEventListener("DOMContentLoaded", function () {
       if (this.status === 200) {
         // utilizamos JSON.parse para poder visualizar la respuesta
         // como objeto y no como string
-        console.log(JSON.parse(xhr.responseText));
+        const response = JSON.parse(xhr.responseText),
+          status = response.response,
+          projectName = response.project,
+          idProject = response.id,
+          action = response.action;
+
+        // si todo esta correcto
+        if (status === "success") {
+          if (action === "crear") {
+            // inyectar el proyecto al HTML
+            let newProject = document.createElement("li");
+            newProject.innerHTML = `
+              <a href="index.php?id_project=${idProject}" id = ${idProject}>${projectName}</a>
+            `;
+            listProjects.appendChild(newProject);
+
+            // enviar el mensaje
+            Swal.fire({
+              icon: "success",
+              title: "Proyecto creado",
+              text: `El proyecto: ${projectName} se creo correctamente`,
+            }).then((result) => {
+              if (result.value) {
+                window.location.href = `index.php?id_project=${idProject}`;
+              }
+            });
+          }
+          // si ocurrio un erro
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Hubo un error!",
+          });
+        }
       }
     };
 
