@@ -6,12 +6,21 @@
   <div class="panel lista-proyectos">
     <h2>Proyectos</h2>
     <ul id="proyectos">
-      <li>
-        <a href="#"> Diseño Página Web </a>
-      </li>
-      <li>
-        <a href="#"> Nuevo Sitio en wordPress </a>
-      </li>
+    <?php
+      $projects = getProjects();
+      // echo '<pre>';
+      // print_r($projects->fetch_all(MYSQLI_ASSOC));
+      // echo '</pre>';
+      if ($projects) {
+        foreach($projects as $project) {
+          echo '<li>';
+            echo "<a href=index.php?id_project=" . $project['id_project'] . " id=" . $project['id_project'] .">";
+            echo $project['name'];
+            echo '</a>';
+          echo '</li>';
+        }
+      }
+    ?>
     </ul>
   </div>
 </aside>
