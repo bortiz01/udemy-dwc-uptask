@@ -41,9 +41,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function saveProjectDB(p_projectName) {
-    // inyectar el HTML
-    let newProject = document.createElement("li");
-    newProject.innerHTML = `<a href='#'>${p_projectName}</a>`;
-    listProjects.appendChild(newProject);
+    // preparar los datos por FormData
+    const data = new FormData();
+    data.append("project", p_projectName);
+    data.append("action", "crear");
+
+    // pasos para el llamado por AJAX
+    // 1. crear el objeto ajax
+    const xhr = new XMLHttpRequest();
+
+    // 2. abrir la conexion
+    xhr.open("POST", "includes/models/model-project.php", true);
+
+    // 3. procesar la respuesta
+    xhr.onload = function () {
+      if (this.status === 200) {
+        // utilizamos JSON.parse para poder visualizar la respuesta
+        // como objeto y no como string
+        console.log(JSON.parse(xhr.responseText));
+      }
+    };
+
+    // 4. hacer la peticion
+    xhr.send(data);
+
+    //   // inyectar el HTML
+    //   let newProject = document.createElement("li");
+    //   newProject.innerHTML = `<a href='#'>${p_projectName}</a>`;
+    //   listProjects.appendChild(newProject);
   }
 });

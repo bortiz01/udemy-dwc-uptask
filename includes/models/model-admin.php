@@ -24,7 +24,7 @@
     try {
       // definimos la consulta por prepare statement
       // 1. indicamos la consulta con parametros
-      $stmt = $conn->prepare('INSERT INTO user (username, password) VALUES  (?, ?)');
+      $stmt = $conn->prepare('INSERT INTO users (username, password) VALUES  (?, ?)');
       // 2. relacionamos los parametros
       $stmt->bind_param('ss', $usuario, $hash_password);
       // 3. ejecutamos la consulta
@@ -68,7 +68,7 @@ if ($accion === 'login') {
     try {
       // definimos la consulta por prepare statement
       // 1. indicamos la consulta con parametros
-      $stmt = $conn->prepare('SELECT * FROM user WHERE username = ?');
+      $stmt = $conn->prepare('SELECT * FROM users WHERE username = ?');
       // 2. relacionamos los parametros
       $stmt->bind_param('s', $usuario);
       // 3. ejecutamos la consulta
