@@ -26,17 +26,22 @@
     try{
       // return $conn->query("SELECT name FROM projects WHERE id_project = {$id}");
 
+      // definimos la consulta con statment
       $stmt = $conn->prepare('SELECT name FROM projects WHERE id_project = ?');
+      // vinculamos los parametros
       $stmt->bind_param('i', $id);
+      // ejecutamos la consulta
       $stmt->execute();
-      
+      // asigamos la variable para cada campo de respuesta
       $stmt->bind_result($db_name);
-      $stmt->fetch();
-      
+      // comvertimos el resultado en un string
+      $stmt->fetch();      
+      // cerramos conexiones
       $stmt->close();
-      $conn->close();
-      
+      $conn->close();      
+      // retornamos el nombre como resultado
       return $db_name;
+    // en caso de error
     }catch(Exception $e){
       echo 'error: ' . $e.getMessage();
       return false;

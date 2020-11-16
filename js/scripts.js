@@ -5,10 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
   // constantes/variables globales
   const listProjects = document.querySelector("ul#proyectos");
 
+  // funcion de escucha del proyecto
   function eventListener() {
+    // 'submit' boton de formularios
+    // 'click' para otros elementos (boton)
+
+    // boton para crear proyectos
     document.querySelector(".crear-proyecto a").addEventListener("click", newProject);
+
+    // boton para crear tareas
+    document.querySelector(".nueva-tarea").addEventListener("click", addTask);
   }
 
+  // crear proyecto
   function newProject(e) {
     // e.preventDefault();
 
@@ -40,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // guardar proyecto en la BD
   function saveProjectDB(p_projectName) {
     // preparar los datos por FormData
     const data = new FormData();
@@ -103,5 +113,52 @@ document.addEventListener("DOMContentLoaded", function () {
     //   let newProject = document.createElement("li");
     //   newProject.innerHTML = `<a href='#'>${p_projectName}</a>`;
     //   listProjects.appendChild(newProject);
+  }
+
+  // agregar una nueva tarea
+  function addTask(e) {
+    // prevenimos la redireccion por default
+    e.preventDefault();
+
+    // obtenemos el valor del campo
+    const taskName = document.querySelector(".nombre-tarea").value;
+
+    // validamos que no este vacio
+    if (!taskName) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Una tarea no puede ir vacia",
+      });
+      // si la tarea esta correcta
+    } else {
+      // creamos el FormData
+      const data = new FormData();
+      data.append("taskName", taskName);
+      data.append("action", "crear");
+      data.append("idProject", document.querySelector("#id_proyecto").value);
+
+      // realizamos el llamado por ajax
+      // 1. crear el objeto
+      const xhr = new XMLHttpRequest();
+
+      // 2. abrir la conexion
+      xhr.open("POST", "includes/models/model-task.php", true);
+
+      // 3. procesar la respuesta
+      xhr.onload = function () {
+        // todo correcto
+        if (this.status === 200) {
+          let response = JSON.parse(xhr.responseText);
+          console.log(response);
+
+          // error
+        } else {
+        }
+      };
+
+      // 4. hacer la peticion
+      xhr.send(data);
+    }
   }
 });

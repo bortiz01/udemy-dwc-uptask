@@ -4,6 +4,7 @@
 <?php include 'includes\templates\header.php'; ?>
 <?php include 'includes\templates\bar.php'; ?>
 
+  <!-- obtenemos el id del proyecto -->
   <?php
     if(isset($_GET['id_project'])) {
       $id_project = $_GET['id_project'];
@@ -41,7 +42,7 @@
             <input type="text" placeholder="Nombre Tarea" class="nombre-tarea" />
           </div>
           <div class="campo enviar">
-            <input type="hidden" id="<?php echo $id_project; ?>" value="id_proyecto" />
+            <input type="hidden" value="<?php echo $id_project; ?>" id="id_proyecto" />
             <input type="submit" class="boton nueva-tarea" value="Agregar" />
           </div>
         </form>
