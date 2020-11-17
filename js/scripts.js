@@ -39,10 +39,12 @@ document.addEventListener("DOMContentLoaded", function () {
     inputNewProject.addEventListener("keypress", function (e) {
       // keypress toma el valor de which o keycode del elemento
       const keypress = e.which || e.keycode;
+
       // verificamos si se presiono ENTER (13)
       if (keypress === 13) {
         // salvamos el nombre del proyecto en la DB
         saveProjectDB(inputNewProject.value);
+
         // removemos el elemento creado
         listProjects.removeChild(newInput);
       }
@@ -108,11 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 4. hacer la peticion
     xhr.send(data);
-
-    //   // inyectar el HTML
-    //   let newProject = document.createElement("li");
-    //   newProject.innerHTML = `<a href='#'>${p_projectName}</a>`;
-    //   listProjects.appendChild(newProject);
   }
 
   // agregar una nueva tarea
@@ -149,8 +146,51 @@ document.addEventListener("DOMContentLoaded", function () {
       xhr.onload = function () {
         // todo correcto
         if (this.status === 200) {
-          let response = JSON.parse(xhr.responseText);
-          console.log(response);
+          // obtenemos el valor de json enviado
+          const response = JSON.parse(xhr.responseText);
+
+          // asignar valores
+          const status = response.status,
+            newID = response.newID,
+            action = response.action,
+            taskName = response.taskName;
+
+          // si esta correcto
+          if (status === "success") {
+            // si la accion es crear
+            if (action === "crear") {
+              Swal.fire({
+                icon: "success",
+                title: "Tarea Creada",
+                text: `La tarea: ${taskName} se asigno correctamente`,
+              });
+
+              // construir el template
+              const newTask = document.createElement("li");
+              newTask.id = "tarea:" + newID;
+              newTask.classList.add("tarea");
+
+              newTask.innerHTML = `
+                <p>${taskName}</p>
+                <div class="acciones">
+                  <i class="far fa-check-circle"></i>
+                  <i class="fas fa-trash"></i>
+                </div>                
+              `;
+
+              // agregarlo al HTML
+              const listTask = document.querySelector(".listado-pendientes ul");
+              listTask.appendChild(newTask);
+
+              // limpiar el formulario
+              document.querySelector(".agregar-tarea").reset();
+
+              // si la accion es modificar
+            } else {
+            }
+          } else {
+            // si hubo un erro
+          }
 
           // error
         } else {
