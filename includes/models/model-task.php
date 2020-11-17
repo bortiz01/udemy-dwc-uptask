@@ -1,10 +1,10 @@
 <?php
   /* ------------------------------- get values ------------------------------- */
-  $taskName = $_POST['taskName'];
-  $idProject = (int) $_POST['idProject']; //indicamos que el valor sera un entero
+  $task_name = $_POST['task_name'];
+  $id_project = (int) $_POST['id_project']; //indicamos que el valor sera un entero
   $action = $_POST['action'];  
 
-  /* ----------------------------- create project ----------------------------- */
+  /* ----------------------------- create task ----------------------------- */
   // crear los proyectos
   if ($action === 'crear') {
     
@@ -17,7 +17,7 @@
       $stmt = $conn->prepare('INSERT INTO tasks (id_project, name) VALUES  (?, ?)');
       
       // 2. relacionamos los parametros
-      $stmt->bind_param('is', $idProject, $taskName);
+      $stmt->bind_param('is', $id_project, $task_name);
       
       // 3. ejecutamos la consulta
       $stmt->execute();
@@ -30,7 +30,7 @@
           'status' => 'success',
           'newID' => $stmt->insert_id,
           'action' => $action,
-          'taskName' => $taskName
+          'taskName' => $task_name
         ];
       // si no se modifico ningun registro
       } else {

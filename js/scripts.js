@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // inyectar el proyecto al HTML
             let newProject = document.createElement("li");
             newProject.innerHTML = `
-              <a href="index.php?id_project=${idProject}" id = ${idProject}>${projectName}</a>
+              <a href="index.php?id_project=${idProject}" id=proyecto:${idProject}>${projectName}</a>
             `;
             listProjects.appendChild(newProject);
 
@@ -131,9 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       // creamos el FormData
       const data = new FormData();
-      data.append("taskName", taskName);
+      data.append("task_name", taskName);
       data.append("action", "crear");
-      data.append("idProject", document.querySelector("#id_proyecto").value);
+      data.append("id_project", document.querySelector("#id_proyecto").value);
 
       // realizamos el llamado por ajax
       // 1. crear el objeto
@@ -147,13 +147,14 @@ document.addEventListener("DOMContentLoaded", function () {
         // todo correcto
         if (this.status === 200) {
           // obtenemos el valor de json enviado
+          // (JSON.parse nos permite obteber la respuesta como objeto y no como string)
           const response = JSON.parse(xhr.responseText);
 
           // asignar valores
           const status = response.status,
-            newID = response.newID,
+            new_id = response.new_id,
             action = response.action,
-            taskName = response.taskName;
+            task_name = response.task_name;
 
           // si esta correcto
           if (status === "success") {
@@ -162,16 +163,16 @@ document.addEventListener("DOMContentLoaded", function () {
               Swal.fire({
                 icon: "success",
                 title: "Tarea Creada",
-                text: `La tarea: ${taskName} se asigno correctamente`,
+                text: `La tarea: ${task_name} se asigno correctamente`,
               });
 
               // construir el template
-              const newTask = document.createElement("li");
-              newTask.id = "tarea:" + newID;
-              newTask.classList.add("tarea");
+              const new_task = document.createElement("li");
+              new_task.id = "tarea:" + new_id;
+              new_task.classList.add("tarea");
 
-              newTask.innerHTML = `
-                <p>${taskName}</p>
+              new_task.innerHTML = `
+                <p>${task_name}</p>
                 <div class="acciones">
                   <i class="far fa-check-circle"></i>
                   <i class="fas fa-trash"></i>
@@ -179,8 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
               `;
 
               // agregarlo al HTML
-              const listTask = document.querySelector(".listado-pendientes ul");
-              listTask.appendChild(newTask);
+              const list_task = document.querySelector(".listado-pendientes ul");
+              list_task.appendChild(newTask);
 
               // limpiar el formulario
               document.querySelector(".agregar-tarea").reset();

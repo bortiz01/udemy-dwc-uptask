@@ -14,7 +14,7 @@
       if ($projects) {
         foreach($projects as $project) {
           echo '<li>';
-            echo "<a href=index.php?id_project=" . $project['id_project'] . " id=" . $project['id_project'] .">";
+            echo "<a href=index.php?id_project=" . $project['id_project'] . " id=proyecto:" . $project['id_project'] .">";
             echo $project['name'];
             echo '</a>';
           echo '</li>';

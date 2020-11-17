@@ -55,13 +55,28 @@
 
       <div class="listado-pendientes">
         <ul>
-          <li id="tarea:<?php echo $tarea['id'] ?>" class="tarea">
-            <p>Cambiar el Logotipo</p>
-            <div class="acciones">
-              <i class="far fa-check-circle"></i>
-              <i class="fas fa-trash"></i>
-            </div>
-          </li>
+
+          <?php
+            // <!-- obtiene las tareas del proyecto actual -->
+            $db_tasks = getProjectTask($id_project);
+            
+            // <!-- verificamos si contiene registros -->
+            if ($db_tasks->num_rows > 0) {
+              
+              // <!-- recorremos los registros y obtenemos cada row -->
+              foreach($db_tasks as $task) {
+                // <!-- insertamos el codigo html por cada loop -->
+                echo '<li id="tarea:' . $task["id_project"] . '" class="tarea">';
+                  echo '<p>' . $task['name'] . '</p>';
+                  echo '<div class="acciones">';
+                    echo '<i class="far fa-check-circle ' . ($task['state'] === 1 ? 'completo' : '') . '"></i>';
+                    echo '<i class="fas fa-trash"></i>';
+                  echo '</div>';
+                echo '</li>';
+              }
+            }
+          ?>
+
         </ul>
       </div>
     </main>
