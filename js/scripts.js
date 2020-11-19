@@ -211,11 +211,23 @@ document.addEventListener("DOMContentLoaded", function () {
   function actionTask(e) {
     // console.log(e.target);
     if (e.target.classList.contains("fa-check-circle")) {
-      console.log("hiciste click en el icono de check");
+      // console.log("hiciste click en el icono de check");
+      if (e.target.classList.contains("completo")) {
+        changeStateTask(e.target);
+        e.target.classList.remove("completo");
+      } else {
+        changeStateTask(e.target);
+        e.target.classList.add("completo");
+      }
     }
 
     if (e.target.classList.contains("fa-trash")) {
       console.log("hiciste click en el icono de borrar");
     }
+  }
+
+  function changeStateTask(p_task) {
+    const idTask = p_task.parentElement.parentElement.id.split(":");
+    console.log(idTask[1]);
   }
 });

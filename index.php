@@ -66,7 +66,7 @@
               // <!-- recorremos los registros y obtenemos cada row -->
               foreach($db_tasks as $task) {
                 // <!-- insertamos el codigo html por cada loop -->
-                echo '<li id="tarea:' . $task["id_project"] . '" class="tarea">';
+                echo '<li id="tarea:' . $task["id_task"] . '" class="tarea">';
                   echo '<p>' . $task['name'] . '</p>';
                   echo '<div class="acciones">';
                     echo '<i class="far fa-check-circle ' . ($task['state'] === 1 ? 'completo' : '') . '"></i>';

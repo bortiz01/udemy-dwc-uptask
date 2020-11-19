@@ -28,9 +28,9 @@
         // creamos la respuesta a enviar
         $output = [
           'status' => 'success',
-          'newID' => $stmt->insert_id,
+          'new_id' => $stmt->insert_id,
           'action' => $action,
-          'taskName' => $task_name
+          'task_name' => $task_name
         ];
       // si no se modifico ningun registro
       } else {
