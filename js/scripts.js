@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // boton para crear tareas
     document.querySelector(".nueva-tarea").addEventListener("click", addTask);
+
+    // botones para las tareas
+    document.querySelector(".listado-pendientes").addEventListener("click", actionTask);
   }
 
   // crear proyecto
@@ -200,6 +203,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 4. hacer la peticion
       xhr.send(data);
+    }
+  }
+
+  // con e.target podemos acceder al delegation.
+  // el cual nos permite verificar con que objeto se ha disparado algun evento
+  function actionTask(e) {
+    // console.log(e.target);
+    if (e.target.classList.contains("fa-check-circle")) {
+      console.log("hiciste click en el icono de check");
+    }
+
+    if (e.target.classList.contains("fa-trash")) {
+      console.log("hiciste click en el icono de borrar");
     }
   }
 });
