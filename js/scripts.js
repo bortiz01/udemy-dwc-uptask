@@ -213,11 +213,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.target.classList.contains("fa-check-circle")) {
       // console.log("hiciste click en el icono de check");
       if (e.target.classList.contains("completo")) {
-        changeStateTask(e.target);
         e.target.classList.remove("completo");
+        changeStateTask(e.target, 0);
       } else {
-        changeStateTask(e.target);
         e.target.classList.add("completo");
+        changeStateTask(e.target, 1);
       }
     }
 
@@ -226,8 +226,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function changeStateTask(p_task) {
-    const idTask = p_task.parentElement.parentElement.id.split(":");
-    console.log(idTask[1]);
+  // cambiar el estado de la tarea seleccionada
+  function changeStateTask(p_task, p_state) {
+    const id_task = p_task.parentElement.parentElement.id.split(":");
+
+    // crear el FormData
+    const data = new FormData();
+    data.append("id_task", id_task[1]);
+    data.append("action", "actualizar");
+    data.append("state", p_state);
+
+    // llamado a ajax
+    // 1.crear el objeto
+    const xhr = new XMLHttpRequest();
+
+    // 2. abrir la conexion
+    xhr.open("POST", "includes/models/model-task.php", true);
+
+    // 3. procesar la respuesta
+    xhr.onload = function () {
+      if (this.status === 200) {
+        console.log(JSON.parse(xhr.responseText));
+      }
+    };
+
+    // 4. enviar la peticion
+    xhr.send(data);
   }
 });

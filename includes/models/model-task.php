@@ -1,12 +1,14 @@
 <?php
-  /* ------------------------------- get values ------------------------------- */
-  $task_name = $_POST['task_name'];
-  $id_project = (int) $_POST['id_project']; //indicamos que el valor sera un entero
-  $action = $_POST['action'];  
 
+/* ---------------------------- get global values --------------------------- */
+  $action = $_POST['action'];    
+  
   /* ----------------------------- create task ----------------------------- */
   // crear los proyectos
   if ($action === 'crear') {
+    // obtener valores
+    $task_name = $_POST['task_name'];
+    $id_project = (int) $_POST['id_project']; //indicamos que el valor sera un entero
     
     // importamos la conexion a la BD
     require '..\functions\db_connect.php';
@@ -55,9 +57,14 @@
     };
   };
 
+  /* ------------------------------- update task ------------------------------ */
+  if ($action === 'actualizar') {
+    echo json_encode($_POST);
+  }
+
   /* --------------------------- return the response -------------------------- */
   // convertimos el arreglo en un JSON para el 
   // intercambio de datos entre PHP y AJAX
-  echo json_encode($output);
+  // echo json_encode($output);
 
 ?>
