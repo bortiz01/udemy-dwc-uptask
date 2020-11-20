@@ -211,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function actionTask(e) {
     // console.log(e.target);
     if (e.target.classList.contains("fa-check-circle")) {
-      // console.log("hiciste click en el icono de check");
       if (e.target.classList.contains("completo")) {
         e.target.classList.remove("completo");
         changeStateTask(e.target, 0);
@@ -222,12 +221,33 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (e.target.classList.contains("fa-trash")) {
-      console.log("hiciste click en el icono de borrar");
+      Swal.fire({
+        title: "¿Seguro(a)?",
+        text: "!Estas accion no se puede deshacer!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, borrar!",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // obtenemos la tarea
+          const taskDelete = e.target.parentElement.parentElement;
+          // borrar de la bd
+          deleteTask(taskDelete);
+          // borrar del html
+          taskDelete.remove();
+          // mensaje de notificacion
+          Swal.fire("!Borrado!", "La tarea fue eliminada", "success");
+        }
+      });
     }
   }
 
   // cambiar el estado de la tarea seleccionada
   function changeStateTask(p_task, p_state) {
+    // obtenemos el id de la tarea
     const id_task = p_task.parentElement.parentElement.id.split(":");
 
     // crear el FormData
@@ -245,12 +265,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 3. procesar la respuesta
     xhr.onload = function () {
-      if (this.status === 200) {
-        console.log(JSON.parse(xhr.responseText));
-      }
+      // if (this.status === 200) {
+      // }
     };
 
     // 4. enviar la peticion
     xhr.send(data);
+  }
+
+  function deleteTask(p_task) {
+    console.log(p_task);
   }
 });
