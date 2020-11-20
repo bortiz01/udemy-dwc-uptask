@@ -83,7 +83,16 @@
 
         </ul>
       </div>
-    </main>
+    
+      <div class="avance">
+        <h2>Avance del proyecto
+          <div id="barra-avance" class="barra-avance">
+            <div id="porcentaje" class="porcentaje">
+            </div>
+          </div>
+        </h2>
+      </div>    
+    </main>      
   </div>
   <!--.contenedor-->
 

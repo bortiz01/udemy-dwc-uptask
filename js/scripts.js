@@ -2,6 +2,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   eventListener();
 
+  updateProgress();
+
   // constantes/variables globales
   const listProjects = document.querySelector("ul#proyectos");
 
@@ -196,6 +198,9 @@ document.addEventListener("DOMContentLoaded", function () {
               // limpiar el formulario
               document.querySelector(".agregar-tarea").reset();
 
+              // actualizar la barra de progreso
+              updateProgress();
+
               // si la accion es modificar
             } else {
             }
@@ -274,6 +279,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // 3. procesar la respuesta
     xhr.onload = function () {
       if (this.status === 200) {
+        // actualizar la barra de progreso
+        updateProgress();
       }
     };
 
@@ -305,10 +312,36 @@ document.addEventListener("DOMContentLoaded", function () {
         if (task_list.length == 0) {
           document.querySelector(".listado-pendientes ul").innerHTML = "<p class=lista-vacia> No hay tareas en este proyecto </p>";
         }
+
+        // actualizar la barra de progreso
+        updateProgress();
       }
     };
 
     // 4. enviar la peticion
     xhr.send(data);
+  }
+
+  /* ------------------ actualizar el progreso de las tareas ------------------ */
+  function updateProgress() {
+    // obtener toda slas tareas
+    const task = document.querySelectorAll("li.tarea");
+
+    // obtener las tareas completas
+    const completed_tasks = document.querySelectorAll("i.completo");
+
+    // determinar el avance
+    const percent = Math.round((completed_tasks.length / task.length) * 100);
+
+    const progress = document.querySelector(".porcentaje");
+    progress.style.width = percent + "%";
+
+    if (percent == 100) {
+      Swal.fire({
+        icon: "success",
+        title: "Proyecto terminado",
+        text: "Ya no tienes tareas pendientes",
+      });
+    }
   }
 });
