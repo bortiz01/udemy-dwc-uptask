@@ -74,6 +74,10 @@
                   echo '</div>';
                 echo '</li>';
               }
+            } else {
+              echo '<p class=lista-vacia>';
+                echo 'No hay tareas en este proyecto';
+              echo '</p>';
             }
           ?>
 

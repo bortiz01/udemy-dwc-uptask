@@ -170,6 +170,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: `La tarea: ${task_name} se asigno correctamente`,
               });
 
+              // eliminar el mensaje predefinido del html
+              const empty_list = document.querySelector(".lista-vacia");
+              if (empty_list) {
+                empty_list.remove();
+              }
+
               // construir el template
               const new_task = document.createElement("li");
               new_task.id = "tarea:" + new_id;
@@ -267,8 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 3. procesar la respuesta
     xhr.onload = function () {
-      // if (this.status === 200) {
-      // }
+      if (this.status === 200) {
+      }
     };
 
     // 4. enviar la peticion
@@ -295,7 +301,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // 3. procesar la respuesta
     xhr.onload = function () {
       if (this.status === 200) {
-        console.log(xhr.responseText);
+        const task_list = document.querySelectorAll("li.tarea");
+        if (task_list.length == 0) {
+          document.querySelector(".listado-pendientes ul").innerHTML = "<p class=lista-vacia> No hay tareas en este proyecto </p>";
+        }
       }
     };
 
