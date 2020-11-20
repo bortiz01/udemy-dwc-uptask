@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // constantes/variables globales
   const listProjects = document.querySelector("ul#proyectos");
 
-  // funcion de escucha del proyecto
+  /* --------------------- funcion de escucha del proyecto -------------------- */
+
   function eventListener() {
     // 'submit' boton de formularios
     // 'click' para otros elementos (boton)
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".listado-pendientes").addEventListener("click", actionTask);
   }
 
-  // crear proyecto
+  /* ----------------------------- crear proyecto ----------------------------- */
   function newProject(e) {
     // e.preventDefault();
 
@@ -54,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // guardar proyecto en la BD
+  /* ------------------------ guardar proyecto en la BD ----------------------- */
   function saveProjectDB(p_projectName) {
     // preparar los datos por FormData
     const data = new FormData();
@@ -115,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.send(data);
   }
 
-  // agregar una nueva tarea
+  /* ------------------------- agregar una nueva tarea ------------------------ */
   function addTask(e) {
     // prevenimos la redireccion por default
     e.preventDefault();
@@ -184,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               // agregarlo al HTML
               const list_task = document.querySelector(".listado-pendientes ul");
-              list_task.appendChild(newTask);
+              list_task.appendChild(new_task);
 
               // limpiar el formulario
               document.querySelector(".agregar-tarea").reset();
@@ -206,6 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  /* ------------------------- acciones de las tareas ------------------------- */
   // con e.target podemos acceder al delegation.
   // el cual nos permite verificar con que objeto se ha disparado algun evento
   function actionTask(e) {
@@ -245,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // cambiar el estado de la tarea seleccionada
+  /* --------------- cambiar el estado de la tarea seleccionada --------------- */
   function changeStateTask(p_task, p_state) {
     // obtenemos el id de la tarea
     const id_task = p_task.parentElement.parentElement.id.split(":");
@@ -273,7 +275,31 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.send(data);
   }
 
+  /* ------------------ elimina la tarea de la base de datos ------------------ */
   function deleteTask(p_task) {
-    console.log(p_task);
+    // obtenemos el id de la tarea
+    const id_task = p_task.id.split(":");
+
+    // crear el FormData
+    const data = new FormData();
+    data.append("id_task", id_task[1]);
+    data.append("action", "eliminar");
+
+    // llamado a ajax
+    // 1.crear el objeto
+    const xhr = new XMLHttpRequest();
+
+    // 2. abrir la conexion
+    xhr.open("POST", "includes/models/model-task.php", true);
+
+    // 3. procesar la respuesta
+    xhr.onload = function () {
+      if (this.status === 200) {
+        console.log(xhr.responseText);
+      }
+    };
+
+    // 4. enviar la peticion
+    xhr.send(data);
   }
 });
